@@ -9,14 +9,20 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:extension.addComment"
+  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [{
       "command": "vsc-funny-annotation.helloWorld",
       "title": "Hello World"
+    },{
+      "command": "extension.addComment",
+      "title": "Add Comment"
     }]
   },
+
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
