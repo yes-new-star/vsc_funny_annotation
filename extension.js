@@ -1,3 +1,15 @@
+/*
+ * @name: 
+ * @msg: 
+ * @param: 
+ * @return: 
+ */
+/*
+ * @name: 
+ * @msg: 
+ * @param: 
+ * @return: 
+ */
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
@@ -23,13 +35,13 @@ function activate(context) {
 		// Display a message box to the user
 		const editor = vscode.window.activeTextEditor;
         if (editor) {
-            const selection = editor.selection;
-            const selectedText = editor.document.getText(selection);
+            // const selection = editor.selection;
+            // const selectedText = editor.document.getText(selection);
 
-            const commentedText = addComment(selectedText);
+            const commentedText = addComment();
 
             editor.edit((editBuilder) => {
-                editBuilder.replace(selection, commentedText);
+                editBuilder.replace(void 0, commentedText);
             });
         }
 		vscode.window.showInformationMessage('Hello World from vsc_funny_annotation!');
@@ -38,10 +50,10 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 }
 
-function addComment(text) {
+function addComment() {
     // 在这里添加你的注释逻辑
     // 这是一个简单的示例，将代码用注释符号括起来
-    return `/* ${text} */`;
+    return `/*sny */`;
 }
 
 // This method is called when your extension is deactivated

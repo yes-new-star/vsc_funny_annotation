@@ -22,7 +22,6 @@
       "title": "Add Comment"
     }]
   },
-
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
