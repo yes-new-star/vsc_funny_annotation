@@ -10,9 +10,18 @@
  * @param: 
  * @return: 
  */
+/*
+ * @name: 
+ * @msg: 
+ * @param: 
+ * @return: 
+ */
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
+const fs = require('fs');
+const readline = require('readline');
+
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -36,25 +45,69 @@ function activate(context) {
 		const editor = vscode.window.activeTextEditor;
         if (editor) {
             // const selection = editor.selection;
-            // const selectedText = editor.document.getText(selection);
+
+            const position = editor.selection.active;
 
             const commentedText = addComment();
 
             editor.edit((editBuilder) => {
-                editBuilder.replace(void 0, commentedText);
+                editBuilder.insert(position, commentedText);
             });
         }
-		vscode.window.showInformationMessage('Hello World from vsc_funny_annotation!');
+		// vscode.window.showInformationMessage('Hello World from vsc_funny_annotation!');
 	});
 
 	context.subscriptions.push(disposable);
 }
 
+// function readFile(filename) {
+//   try {
+//     const data = fs.readFileSync(filename, 'utf8');
+//     return data;
+//   } catch (err) {
+//     console.error('读取文件时发生错误:', err);
+//     return null;
+//   }
+// }
+
+function readBetweenEmptyLines(filePath, startEmptyLine, endEmptyLine) {
+  const lines = [];
+  let emptyLineCount = 0;
+  let isInsideRange = false;
+
+  const fileContent = fs.readFileSync(filePath, 'utf8');
+  const fileLines = fileContent.split('\n');
+
+  for (let i = 0; i < fileLines.length; i++) {
+    const line = fileLines[i];
+    if (line.trim() === '') {
+      emptyLineCount++;
+      if (emptyLineCount === startEmptyLine) {
+        isInsideRange = true;
+      } else if (emptyLineCount === endEmptyLine + 1) {
+        isInsideRange = false;
+        break;
+      }
+    }
+
+    if (isInsideRange) {
+      lines.push(line);
+    }
+  }
+
+  return lines.join('');
+}
+
 function addComment() {
     // 在这里添加你的注释逻辑
     // 这是一个简单的示例，将代码用注释符号括起来
-    return `/*sny */`;
+
+    const fileContent = readBetweenEmptyLines('D:\\Desktop\\vsc_funny_annotation\\test.txt',1,2);
+    console.log(fileContent)
+    return fileContent+"\n";
 }
+
+
 
 // This method is called when your extension is deactivated
 function deactivate() {}
