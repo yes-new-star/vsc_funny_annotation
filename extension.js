@@ -80,11 +80,11 @@ function readBetweenEmptyLines(filePath, startEmptyLine, endEmptyLine) {
 
   for (let i = 0; i < fileLines.length; i++) {
     const line = fileLines[i];
-    if (line.trim() === '') {
+    if (line.trim() == '') {
       emptyLineCount++;
       if (emptyLineCount === startEmptyLine) {
         isInsideRange = true;
-      } else if (emptyLineCount === endEmptyLine + 1) {
+      } else if (emptyLineCount === endEmptyLine) {
         isInsideRange = false;
         break;
       }
@@ -102,7 +102,7 @@ function addComment() {
     // 在这里添加你的注释逻辑
     // 这是一个简单的示例，将代码用注释符号括起来
 
-    const fileContent = readBetweenEmptyLines('D:\\Desktop\\vsc_funny_annotation\\test.txt',1,2);
+    const fileContent = readBetweenEmptyLines('D:\\Desktop\\vsc_funny_annotation\\test.txt',2,3);
     console.log(fileContent)
     return fileContent+"\n";
 }
