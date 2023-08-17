@@ -20,7 +20,6 @@
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
 const fs = require('fs');
-const readline = require('readline');
 
 
 // This method is called when your extension is activated
@@ -31,45 +30,69 @@ const readline = require('readline');
  */
 function activate(context) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('VScode插件"vsc-funny-annotation"已被激活!');
+  // Use the console to output diagnostic information (console.log) and errors (console.error)
+  // This line of code will only be executed once when your extension is activated
+  console.log('VScode插件"vsc-funny-annotation"已被激活!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.addComment', function () {
-		// The code you place here will be executed every time your command is executed
+  // The command has been defined in the package.json file
+  // Now provide the implementation of the command with  registerCommand
+  // The commandId parameter must match the command field in package.json
 
-		// Display a message box to the user
-		const editor = vscode.window.activeTextEditor;
-        if (editor) {
-            // const selection = editor.selection;
+  let i = 1;
+  let disposable = vscode.commands.registerCommand('extension.addComment', function (fn) {
+    // The code you place here will be executed every time your command is executed
 
-            const position = editor.selection.active;
+    console.log(`第${i}次调用`);
+    i++;
+    // Display a message box to the user
+    const editor = vscode.window.activeTextEditor;
+    if (editor) {
+      // const selection = editor.selection;
 
-            const commentedText = addComment();
 
-            editor.edit((editBuilder) => {
-                editBuilder.insert(position, commentedText);
-            });
-        }
-		// vscode.window.showInformationMessage('Hello World from vsc_funny_annotation!');
-	});
+      // // 获取
+      // // const position = editor.selection.active;
+      // const selection = editor.selection;
+      // // const selectedText = editor.document.getText(selection);
 
-	context.subscriptions.push(disposable);
+      // const commentedText = addComment();
+
+      // editor.edit((editBuilder) => {
+      //   editBuilder.replace(selection, commentedText);
+      // }).then(() => {
+      //   // 获取替换后的文本位置
+      //   const startPosition = selection.start;
+      //   const endPosition = startPosition.translate(0, commentedText.length);
+
+      //   // 创建一个新的编辑器选择，选中替换后的文本
+      //   const newSelection = new vscode.Selection(startPosition, endPosition);
+
+      //   // 设置新的选择
+      //   editor.selection = newSelection;
+      //   editor.revealRange(newSelection);
+      // });
+      const selection = editor.selection;
+      const selectedText = editor.document.getText(selection);
+
+      // 替换选中文本为新文本
+      const newText = `This is the new text\nqweqweqe\n${i}`;
+
+      editor.edit(editBuilder => {
+        editBuilder.replace(selection, newText);
+        const newSelection = new vscode.Selection(selection.start, selection.end.with(selection.end.line, selection.end.character + newText.length));
+
+        // 将新的选择设置为编辑器的当前选择
+        editor.selection = newSelection;
+      })
+    }
+    // vscode.window.showInformationMessage('Hello World from vsc_funny_annotation!');
+  });
+
+  context.subscriptions.push(disposable);
 }
 
-// function readFile(filename) {
-//   try {
-//     const data = fs.readFileSync(filename, 'utf8');
-//     return data;
-//   } catch (err) {
-//     console.error('读取文件时发生错误:', err);
-//     return null;
-//   }
-// }
 
+// 查询找制定文件中的注释
 function readBetweenEmptyLines(filePath, startEmptyLine, endEmptyLine) {
   const lines = [];
   let emptyLineCount = 0;
@@ -99,21 +122,20 @@ function readBetweenEmptyLines(filePath, startEmptyLine, endEmptyLine) {
 }
 
 function addComment() {
-    // 在这里添加你的注释逻辑
-    // 这是一个简单的示例，将代码用注释符号括起来
-
-    const fileContent = readBetweenEmptyLines('D:\\Desktop\\vsc_funny_annotation\\test.txt',2,3);
-    console.log(fileContent)
-    return fileContent+"\n";
+  // 在这里添加你的注释逻辑
+  // 这是一个简单的示例，将代码用注释符号括起来
+  let randNum = parseInt(Math.random() * 3) + 1;
+  const fileContent = readBetweenEmptyLines('C:\\Users\\15326\\Desktop\\vsc-funny-annotation\\test.txt', randNum, randNum + 1);
+  return fileContent + "\n";
 }
 
 
 
 // This method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() { }
 
 module.exports = {
-	activate,
-	addComment,
-	deactivate
+  activate,
+  addComment,
+  deactivate
 }
