@@ -77,6 +77,7 @@ function readBetweenEmptyLines(filePath, startEmptyLine, endEmptyLine) {
     }
   }
 
+  lines.shift();
   return lines.join("");
 }
 
@@ -85,7 +86,7 @@ function addComment() {
   // 这是一个简单的示例，将代码用注释符号括起来
   let randNum = parseInt(Math.random() * 3) + 1;
   const fileContent = readBetweenEmptyLines(
-    'D:\\Desktop\\vsc_funny_annotation\\test.txt',
+    'C:\\Users\\15326\\Desktop\\vsc-funny-annotation\\test.txt',
     randNum,
     randNum + 1
   );
